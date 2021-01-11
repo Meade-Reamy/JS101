@@ -1,21 +1,17 @@
-/* Features:
-Lizard and Spock, Shortened input, Best of 5, Games won is counted
-can eaisly be expanded without major edits.
-*/
 const rlSync = require('readline-sync');
 let validChoices = [];
 let randomIndex = null;
-let gameinfo = {              //Could not figure out how to make the object all at once
+let gameInfo = {              //Could not figure out how to make the object all at once
   player: {choice: null},
   computer: {choice: null},
   gameParam: {type: null},
   wins: {player: 0}
 };
-gameinfo.player.score = null;
-gameinfo.computer.score = null;
-gameinfo.gameParam.bestOf = null;
-gameinfo.gameParam.winner = null;
-gameinfo.wins.computer = 0;
+gameInfo.player.score = null;
+gameInfo.computer.score = null;
+gameInfo.gameParam.bestOf = null;
+gameInfo.gameParam.winner = null;
+gameInfo.wins.computer = 0;
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -74,10 +70,10 @@ function generatePlayerChoice() {
 }
 
 function displayScore() {
-  if (gameinfo.player.score === 2 && gameinfo.computer.score === 2) {
+  if (gameInfo.player.score === 2 && gameInfo.computer.score === 2) {
     prompt("Last Point!");
-  } else if (gameinfo.player.score === 3 || gameinfo.computer.score === 3) {  //Intentionally empty
-  } else console.log(`Player score: ${gameinfo.player.score}:${gameinfo.computer.score}`);
+  } else if (gameInfo.player.score === 3 || gameInfo.computer.score === 3) {  //Intentionally empty
+  } else console.log(`Player score: ${gameInfo.player.score}:${gameInfo.computer.score}`);
 }
 
 prompt("Welcome to Rock Paper Scissors Lizard Spock <=");
@@ -85,38 +81,38 @@ prompt("When choosing action you may only type the first two letters instead.");
 
 while (true) {
   if (rlSync.keyInYNStrict("=> Rock Paper Scissors Lizard Spock?")) {
-    gameinfo.gameParam.type = "rpsls";
+    gameInfo.gameParam.type = "rpsls";
     validChoices = ['rock','paper', 'scissors', 'lizard', 'spock'];
   } else {
-    gameinfo.gameParam.type = "rps";
+    gameInfo.gameParam.type = "rps";
     validChoices = ['rock','paper', 'scissors'];
   }
   if (rlSync.keyInYNStrict("=> Best of five?")) {
-    gameinfo.player.score = 0;
-    gameinfo.computer.score = 0;
+    gameInfo.player.score = 0;
+    gameInfo.computer.score = 0;
   } else {
-    gameinfo.player.score = 2;
-    gameinfo.computer.score = 2;
+    gameInfo.player.score = 2;
+    gameInfo.computer.score = 2;
   }
 
-  while (gameinfo.player.score < 3 && gameinfo.computer.score < 3) {
+  while (gameInfo.player.score < 3 && gameInfo.computer.score < 3) {
     let choice = generatePlayerChoice();
     randomIndex = Math.floor(Math.random() * validChoices.length);
     let computerChoice = validChoices[randomIndex];
 
     displayWinner(choice, computerChoice);
-    gameinfo.gameParam.winner = returnWinner(choice, computerChoice);
-    if (gameinfo.gameParam.winner === 1) gameinfo.player.score++;
-    if (gameinfo.gameParam.winner === 0) gameinfo.computer.score++;
+    gameInfo.gameParam.winner = returnWinner(choice, computerChoice);
+    if (gameInfo.gameParam.winner === 1) gameInfo.player.score++;
+    if (gameInfo.gameParam.winner === 0) gameInfo.computer.score++;
     displayScore();
   }
-  if (gameinfo.player.score === 3) {
+  if (gameInfo.player.score === 3) {
     prompt("You have won the game! :D");
-    gameinfo.wins.player++;
+    gameInfo.wins.player++;
   } else {
     prompt("You have lost the game! :(");
-    gameinfo.wins.computer++;
+    gameInfo.wins.computer++;
   }
-  console.log(`Player games won: ${gameinfo.wins.player} | Computer games won: ${gameinfo.wins.computer}`);
+  console.log(`Player games won: ${gameInfo.wins.player} | Computer games won: ${gameInfo.wins.computer}`);
   if (!rlSync.keyInYNStrict('Do you want to play again?')) break;
 }
